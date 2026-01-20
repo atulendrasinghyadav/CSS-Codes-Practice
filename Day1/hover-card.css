@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: url('image.png') center/cover no-repeat;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animated background gradient */
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(217, 70, 239, 0.3) 0%, transparent 50%);
+    animation: gradientShift 15s ease infinite;
+    z-index: 0;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+        transform: translate(-50px, -50px) rotate(180deg);
+    }
+}
+
+.container {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    z-index: 1;
+    perspective: 1000px;
+}
+
+.card {
+    /* Glassmorphism effect */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 12px;
+    width: 380px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+
+    /* Initial shadow with black and red colors */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
+        0 10px 30px rgba(220, 38, 38, 0.5),
+        inset 0 1px 0 rgba(0, 0, 0, 0.3);
+
+    /* Smooth transition for transform and other properties */
+    transition: transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease;
+
+    /* Enable 3D transforms */
+    transform-style: preserve-3d;
+
+    /* Initial scale */
+    transform: scale(1) rotateX(0deg) rotateY(0deg);
+}
+
+/* Subtle gradient overlay on card */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(234, 34, 34, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+    border-radius: 24px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Hover state - shadow and border changes (transform handled by JS) */
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+
+    /* Black and red shadow with glow effect on hover */
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8),
+        0 15px 40px rgba(239, 68, 68, 0.7),
+        0 5px 20px rgba(220, 38, 38, 0.6),
+        inset 0 1px 0 rgba(160, 20, 20, 0.6);
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        gap: 30px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 350px;
+    }
+}
