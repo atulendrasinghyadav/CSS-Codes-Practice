@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player Card</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="music-player">
+        <div class="player-background"></div>
+        <div class="player-content">
+            <!-- Album Art -->
+            <div class="album-container">
+                <div class="album-art">
+                    <img id="albumImage"
+                        src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop"
+                        alt="Album Art">
+                    <!-- <div class="album-glow"></div> -->
+                </div>
+            </div>
+
+            <!-- Song Info -->
+            <div class="song-info">
+                <div class="title-row">
+                    <h2 id="songTitle" class="song-title">Midnight Dreams</h2>
+                </div>
+                <p id="artistName" class="artist-name">The Aurora Band</p>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <span id="currentTime" class="time">0:00</span>
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
+                    <div class="progress-thumb" id="progressThumb"></div>
+                </div>
+                <span id="totalTime" class="time">3:45</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="control-btn secondary" id="shuffleBtn" title="Shuffle">
+                    <i class="fas fa-random"></i>
+                </button>
+                <button class="control-btn" id="prevBtn" title="Previous">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="control-btn play-btn" id="playBtn" title="Play/Pause">
+                    <i class="fas fa-play" id="playIcon"></i>
+                </button>
+                <button class="control-btn" id="nextBtn" title="Next">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+                <button class="control-btn secondary" id="repeatBtn" title="Repeat">
+                    <i class="fas fa-redo"></i>
+                </button>
+            </div>
+
+            <!-- Volume Control -->
+            <div class="volume-container">
+                <i class="fas fa-volume-down volume-icon"></i>
+                <div class="volume-bar" id="volumeBar">
+                    <div class="volume-level" id="volumeLevel"></div>
+                    <div class="volume-thumb" id="volumeThumb"></div>
+                </div>
+                <i class="fas fa-volume-up volume-icon"></i>
+            </div>
+
+            <!-- Playlist Peek -->
+            <div class="playlist-peek">
+                <span class="playlist-label">Up Next</span>
+                <span id="nextSong" class="next-song">Electric Sunset</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element for actual playback -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
