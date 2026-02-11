@@ -1,0 +1,44 @@
+/* ── Reset & Page ────────────────────────────────────── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #0d1117 0%, #000 100%);
+    overflow: hidden;
+}
+
+/* ── 3‑D Scene ──────────────────────────────────────── */
+.scene {
+    perspective: 900px;
+    width: 450px;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+.sphere {
+    position: relative;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+}
+
+/* ── Particles ──────────────────────────────────────── */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgb(149, 149, 149);
+    pointer-events: none;
+    will-change: transform, opacity, box-shadow;
+}

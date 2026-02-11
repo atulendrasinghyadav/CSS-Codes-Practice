@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Particle Sphere - Cursor Repel</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <div class="scene" id="scene">
+        <div class="sphere" id="sphere"></div>
+    </div>
+
+    <script>
+        const scene = document.getElementById('scene');
+        const sphere = document.getElementById('sphere');
+
+        const N = 1500;           // particle count
+        const R = 200;           // sphere radius (px)
+        const CURSOR_RADIUS = 100;  // influence radius of the cursor (px)
+        const PUSH_STRENGTH = 30;   // max push distance (px)
+        const LERP = 0.9;          // smoothing factor (lower = silkier, higher = snappier)
+        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+        const particles = [];
+        let mouseX = 9999, mouseY = 9999;    // start off-screen
+        let rotY = 0;                         // current Y rotation (deg)
+
+        // ── Build particles ────────────────────────────────
+        for (let i = 0; i < N; i++) {
+            const y = 1 - (i / (N - 1)) * 2;
+            const rRing = Math.sqrt(1 - y * y);
+            const theta = goldenAngle * i;
+            const x = Math.cos(theta) * rRing;
+            const z = Math.sin(theta) * rRing;
+
+            const hue = 200 + y * 60;
+            const size = 2 + Math.random() * 2;
+
+            const el = document.createElement('span');
+            el.className = 'particle';
+            el.style.width = size + 'px';
+            el.style.height = size + 'px';
+            el.style.setProperty('--hue', hue);
+            sphere.appendChild(el);
+
+            particles.push({
+                el,
+                // unit sphere coords (never change)
+                sx: x, sy: y, sz: z,
+                // current offset from sphere surface (smoothed)
+                ox: 0, oy: 0, oz: 0,
+            });
+        }
+        
+        scene.addEventListener('mousemove', (e) => {
+            const rect = scene.getBoundingClientRect();
+            mouseX = e.clientX - rect.left - rect.width / 2;
+            mouseY = e.clientY - rect.top - rect.height / 2;
+        });
+        scene.addEventListener('mouseleave', () => {
+            mouseX = 9999;
+            mouseY = 9999;
+        });
+
+        // ── Animation loop ─────────────────────────────────
+        function animate() {
+            rotY += 0.35;                        // rotation speed (deg / frame)
+            const rad = (rotY * Math.PI) / 180;
+            const cosR = Math.cos(rad);
+            const sinR = Math.sin(rad);
+
+            for (const p of particles) {
+                // Rotate unit position around Y
+                const rx = p.sx * cosR + p.sz * sinR;
+                const ry = p.sy;
+                const rz = -p.sx * sinR + p.sz * cosR;
+
+                // World position on sphere surface
+                const wx = rx * R;
+                const wy = ry * R;
+                const wz = rz * R;
+
+                // 2‑D projected position (simple perspective)
+                const scale2d = 900 / (900 + wz);    // matches CSS perspective
+                const projX = wx * scale2d;
+                const projY = wy * scale2d;
+
+                // Distance from cursor to this projected particle
+                const dx = projX - mouseX;
+                const dy = projY - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Target offset — push outward from cursor
+                let tx = 0, ty = 0, tz = 0;
+                if (dist < CURSOR_RADIUS && dist > 0.1) {
+                    const strength = (1 - dist / CURSOR_RADIUS);       // 1 at center → 0 at edge
+                    const ease = strength * strength;                   // quadratic ease
+                    const push = ease * PUSH_STRENGTH;
+
+                    // normalised direction away from cursor in screen‑space,
+                    // then mapped back into 3‑D along the camera‑facing plane
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+                    tx = nx * push;
+                    ty = ny * push;
+                    tz = push * 0.4;   // slight depth push for 3‑D feel
+                }
+
+                // Smooth lerp towards target
+                p.ox += (tx - p.ox) * LERP;
+                p.oy += (ty - p.oy) * LERP;
+                p.oz += (tz - p.oz) * LERP;
+
+                // Final position
+                const fx = wx + p.ox;
+                const fy = wy + p.oy;
+                const fz = wz + p.oz;
+
+                p.el.style.transform = `translate3d(${fx}px, ${fy}px, ${fz}px)`;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>
