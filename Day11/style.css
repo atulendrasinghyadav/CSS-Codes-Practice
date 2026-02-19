@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #0f0c29;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    /* Responsive width */
+    max-width: 1200px;
+    height: 500px;
+    gap: 15px;
+}
+
+.card {
+    flex: 1;
+    position: relative;
+    border-radius: 30px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    /* Adding a subtle border for definition */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Stunning Gradients */
+.card-1 {
+    background: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 100%);
+}
+
+.card-2 {
+    background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+.card-3 {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.card-4 {
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+
+.card-5 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Hover Effect: Expand focused card */
+.card:hover {
+    flex: 10;
+    /* Significant expansion */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    transform: scale(1.02);
+    /* Slight pop */
+    z-index: 10;
+}
+
+/* Shrink others slightly (handled by flex logic automatically) but maybe dim them? */
+.container:hover .card:not(:hover) {
+    filter: brightness(0.7) blur(2px);
+    /* Focus effect */
+    transform: scale(0.95);
+}
+
+/* Icon Styling */
+.icon {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    backdrop-filter: blur(5px);
+    transition: all 0.5s ease;
+    z-index: 2;
+}
+
+/* Move icon up when active */
+.card:hover .icon {
+    bottom: calc(100% - 80px);
+    /* Move to top left */
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transform: scale(1.1);
+}
+
+/* Content Styling */
+.content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    color: #fff;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s ease;
+    transition-delay: 0.1s;
+    /* Wait for expansion */
+}
+
+/* Show content on hover */
+.card:hover .content {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.3s;
+    /* Delay text appearance slightly more */
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: -1px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 400;
+    max-width: 80%;
+    /* Don't span full width to look cleaner */
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: 80vh;
+    }
+
+    .card:hover {
+        flex: 5;
+        /* Less expansion on mobile */
+    }
+
+    .card:hover .icon {
+        bottom: calc(100% - 70px);
+    }
+}
