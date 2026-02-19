@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic Cursor Tracking | Interactive Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+    
+    <!-- Particle Canvas -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="logo" data-hover>AESTHETIC.</a>
+        <div class="nav-links">
+            <a href="#" data-hover>Work</a>
+            <a href="#" data-hover>About</a>
+            <a href="#" data-hover>Contact</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <section class="hero">
+            <h1 data-hover>Interactive<br>Cursor<br>Experience</h1>
+            <p>Move your mouse to reveal the trail. Hover specifically over elements to see the magnetic effect.</p>
+            <button class="cta-btn" data-hover>Explore Now</button>
+        </section>
+
+        <section class="cards-grid">
+            <div class="card" data-hover>
+                <h3>01. Velocity</h3>
+                <p>Smooth physics-based movement tracking.</p>
+            </div>
+            <div class="card" data-hover>
+                <h3>02. Aesthetics</h3>
+                <p>Minimalist design with deep contrast.</p>
+            </div>
+            <div class="card" data-hover>
+                <h3>03. Interaction</h3>
+                <p>Magnetic pull on hoverable elements.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
