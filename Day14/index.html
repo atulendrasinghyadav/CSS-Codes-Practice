@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Dot Shape Generator</title>
+    <meta name="description"
+        content="Interactive 3D shape generator made with dots. Create spheres, cubes, torus, hearts, and text rendered as particles." />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Controls Panel -->
+    <div class="controls" id="controls">
+        <h2>Shape Generator</h2>
+
+        <div class="control-group">
+            <label for="shapeSelect">Shape</label>
+            <select id="shapeSelect">
+                <option value="sphere" selected>Sphere</option>
+                <option value="cube">Cube</option>
+                <option value="torus">Torus</option>
+                <option value="cylinder">Cylinder</option>
+                <option value="cone">Cone</option>
+                <option value="heart">Heart</option>
+                <option value="spiral">Spiral</option>
+                <option value="text">Text</option>
+            </select>
+        </div>
+
+        <div class="control-group text-group" id="textGroup">
+            <label for="textInput">Your Text</label>
+            <input type="text" id="textInput" placeholder="Type something…" maxlength="12" value="HELLO" />
+        </div>
+
+        <div class="control-group">
+            <label for="particleSlider">Particles</label>
+            <div class="range-wrap">
+                <input type="range" id="particleSlider" min="400" max="3000" value="800" step="100" />
+                <span class="range-value" id="particleValue">800</span>
+            </div>
+        </div>
+
+        <button class="btn-apply" id="btnApply">Generate</button>
+    </div>
+
+    <!-- 3D Scene -->
+    <div class="scene" id="scene">
+        <div class="sphere" id="shapeContainer"></div>
+    </div>
+
+    <!-- Hidden canvas for text sampling -->
+    <canvas id="textCanvas"></canvas>
+
+    <!-- Shape label -->
+    <div class="shape-label" id="shapeLabel">Sphere</div>
+
+    <script>
+        // ── DOM refs ──────────────────────────────────────────
+        const scene = document.getElementById('scene');
+        const container = document.getElementById('shapeContainer');
+        const shapeSelect = document.getElementById('shapeSelect');
+        const textGroup = document.getElementById('textGroup');
+        const textInput = document.getElementById('textInput');
+        const particleSlider = document.getElementById('particleSlider');
+        const particleValue = document.getElementById('particleValue');
+        const btnApply = document.getElementById('btnApply');
+        const shapeLabel = document.getElementById('shapeLabel');
+        const textCanvas = document.getElementById('textCanvas');
+
+        // ── Config ────────────────────────────────────────────
+        const R = 180;               // base radius (px)
+        const CURSOR_RADIUS = 120;
+        const PUSH_STRENGTH = 35;
+        const LERP_PUSH = 0.9;
+        const LERP_MORPH = 0.6;     // shape transition speed
+        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
+        let particles = [];
+        let mouseX = 9999, mouseY = 9999;
+        let rotX = 0, rotY = 0;           // rotation angles (deg)
+        let velX = 0, velY = 0.3;         // rotation velocity (auto-spin Y)
+        let isDragging = false;
+        let lastDragX = 0, lastDragY = 0;
+        let currentShape = 'sphere';
+        let animId = null;
+
+        // ── UI Events ─────────────────────────────────────────
+        shapeSelect.addEventListener('change', () => {
+            const isText = shapeSelect.value === 'text';
+            textGroup.classList.toggle('visible', isText);
+        });
+
+        particleSlider.addEventListener('input', () => {
+            particleValue.textContent = particleSlider.value;
+        });
+
+        btnApply.addEventListener('click', generate);
+
+        // ── Mouse tracking (hover repel) ──────────────────────
+        scene.addEventListener('mousemove', (e) => {
+            const rect = scene.getBoundingClientRect();
+            mouseX = e.clientX - rect.left - rect.width / 2;
+            mouseY = e.clientY - rect.top - rect.height / 2;
+
+            // Drag-to-rotate
+            if (isDragging) {
+                const dx = e.clientX - lastDragX;
+                const dy = e.clientY - lastDragY;
+                velY = dx * 0.4;   // horizontal drag → Y rotation
+                velX = -dy * 0.4;  // vertical drag → X rotation
+                lastDragX = e.clientX;
+                lastDragY = e.clientY;
+            }
+        });
+        scene.addEventListener('mouseleave', () => {
+            mouseX = 9999;
+            mouseY = 9999;
+            isDragging = false;
+        });
+
+        // ── Drag-to-rotate (click & drag) ─────────────────────
+        scene.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastDragX = e.clientX;
+            lastDragY = e.clientY;
+            scene.style.cursor = 'grabbing';
+        });
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            scene.style.cursor = 'grab';
+        });
+
+        // ── Touch support for rotation ────────────────────────
+        scene.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            lastDragX = e.touches[0].clientX;
+            lastDragY = e.touches[0].clientY;
+        }, { passive: true });
+        scene.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const dx = e.touches[0].clientX - lastDragX;
+                const dy = e.touches[0].clientY - lastDragY;
+                velY = dx * 0.4;
+                velX = -dy * 0.4;
+                lastDragX = e.touches[0].clientX;
+                lastDragY = e.touches[0].clientY;
+            }
+        }, { passive: true });
+        scene.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  SHAPE GENERATORS — return [{x, y, z}, …] in range ~[-1,1]
+        // ═══════════════════════════════════════════════════════
+
+        function genSphere(N) {
+            const pts = [];
+            for (let i = 0; i < N; i++) {
+                const y = 1 - (i / (N - 1)) * 2;
+                const r = Math.sqrt(1 - y * y);
+                const theta = goldenAngle * i;
+                pts.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r });
+            }
+            return pts;
+        }
+
+        function genCube(N) {
+            const pts = [];
+            const perFace = Math.ceil(N / 6);
+            const faces = [
+                (u, v) => ({ x: u, y: v, z: 1 }),
+                (u, v) => ({ x: u, y: v, z: -1 }),
+                (u, v) => ({ x: 1, y: u, z: v }),
+                (u, v) => ({ x: -1, y: u, z: v }),
+                (u, v) => ({ x: u, y: 1, z: v }),
+                (u, v) => ({ x: u, y: -1, z: v }),
+            ];
+            for (let f = 0; f < 6 && pts.length < N; f++) {
+                for (let i = 0; i < perFace && pts.length < N; i++) {
+                    const u = Math.random() * 2 - 1;
+                    const v = Math.random() * 2 - 1;
+                    pts.push(faces[f](u, v));
+                }
+            }
+            return pts;
+        }
+
+        function genTorus(N) {
+            const pts = [];
+            const Rmaj = 0.7, Rmin = 0.3;
+            for (let i = 0; i < N; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI * 2;
+                pts.push({
+                    x: (Rmaj + Rmin * Math.cos(phi)) * Math.cos(theta),
+                    y: Rmin * Math.sin(phi),
+                    z: (Rmaj + Rmin * Math.cos(phi)) * Math.sin(theta),
+                });
+            }
+            return pts;
+        }
+
+        function genCylinder(N) {
+            const pts = [];
+            const capN = Math.floor(N * 0.15);
+            const sideN = N - capN * 2;
+            // sides
+            for (let i = 0; i < sideN; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const h = Math.random() * 2 - 1;
+                pts.push({ x: Math.cos(theta), y: h, z: Math.sin(theta) });
+            }
+            // top & bottom caps
+            for (let c = 0; c < 2; c++) {
+                const cy = c === 0 ? 1 : -1;
+                for (let i = 0; i < capN; i++) {
+                    const r = Math.sqrt(Math.random());
+                    const theta = Math.random() * Math.PI * 2;
+                    pts.push({ x: r * Math.cos(theta), y: cy, z: r * Math.sin(theta) });
+                }
+            }
+            return pts;
+        }
+
+        function genCone(N) {
+            const pts = [];
+            const baseN = Math.floor(N * 0.2);
+            const sideN = N - baseN;
+            // sides
+            for (let i = 0; i < sideN; i++) {
+                const h = Math.random();                // 0 (tip) to 1 (base)
+                const r = h;                             // radius grows with height
+                const theta = Math.random() * Math.PI * 2;
+                pts.push({ x: r * Math.cos(theta), y: 1 - h * 2, z: r * Math.sin(theta) });
+            }
+            // base cap
+            for (let i = 0; i < baseN; i++) {
+                const r = Math.sqrt(Math.random());
+                const theta = Math.random() * Math.PI * 2;
+                pts.push({ x: r * Math.cos(theta), y: -1, z: r * Math.sin(theta) });
+            }
+            return pts;
+        }
+
+        function genHeart(N) {
+            const pts = [];
+            for (let i = 0; i < N; i++) {
+                const t = Math.random() * Math.PI * 2;
+                const s = Math.random() * Math.PI;
+                const r = 0.08;
+                // heart surface parametric
+                const x = r * 16 * Math.pow(Math.sin(t), 3);
+                const y = -r * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+                const z = (Math.random() - 0.5) * 0.4;
+                pts.push({ x: x, y: y - 0.15, z });
+            }
+            // normalize
+            let maxR = 0;
+            for (const p of pts) {
+                const d = Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
+                if (d > maxR) maxR = d;
+            }
+            for (const p of pts) { p.x /= maxR; p.y /= maxR; p.z /= maxR; }
+            return pts;
+        }
+
+        function genSpiral(N) {
+            const pts = [];
+            const turns = 6;
+            for (let i = 0; i < N; i++) {
+                const t = i / (N - 1);
+                const angle = t * turns * Math.PI * 2;
+                const y = 1 - t * 2;
+                const r = 0.5 + 0.4 * Math.sin(t * Math.PI);
+                pts.push({
+                    x: r * Math.cos(angle),
+                    y,
+                    z: r * Math.sin(angle),
+                });
+            }
+            return pts;
+        }
+
+        function genText(N, text) {
+            const ctx = textCanvas.getContext('2d');
+            const cw = 512, ch = 256;
+            textCanvas.width = cw;
+            textCanvas.height = ch;
+
+            ctx.clearRect(0, 0, cw, ch);
+            ctx.fillStyle = '#fff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // auto-size font
+            let fontSize = 140;
+            ctx.font = `bold ${fontSize}px Inter, Arial, sans-serif`;
+            let metrics = ctx.measureText(text);
+            while (metrics.width > cw * 0.9 && fontSize > 20) {
+                fontSize -= 4;
+                ctx.font = `bold ${fontSize}px Inter, Arial, sans-serif`;
+                metrics = ctx.measureText(text);
+            }
+
+            ctx.fillText(text, cw / 2, ch / 2);
+
+            const imgData = ctx.getImageData(0, 0, cw, ch).data;
+            const litPixels = [];
+            const step = 2;
+            for (let py = 0; py < ch; py += step) {
+                for (let px = 0; px < cw; px += step) {
+                    const idx = (py * cw + px) * 4;
+                    if (imgData[idx + 3] > 128) {
+                        litPixels.push({ px, py });
+                    }
+                }
+            }
+
+            const pts = [];
+            if (litPixels.length === 0) return genSphere(N);  // fallback
+
+            for (let i = 0; i < N; i++) {
+                const pick = litPixels[Math.floor(Math.random() * litPixels.length)];
+                const x = (pick.px / cw - 0.5) * 2;
+                const y = (pick.py / ch - 0.5) * 2;
+                const z = (Math.random() - 0.5) * 0.15;
+                pts.push({ x, y, z });
+            }
+            return pts;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  GENERATE — builds particles and sets target positions
+        // ═══════════════════════════════════════════════════════
+
+        function generate() {
+            const shape = shapeSelect.value;
+            const N = parseInt(particleSlider.value);
+            const text = textInput.value.trim() || 'HELLO';
+            currentShape = shape;
+            shapeLabel.textContent = shape === 'text' ? `"${text}"` : shape.charAt(0).toUpperCase() + shape.slice(1);
+
+            // Generate target positions
+            let targets;
+            switch (shape) {
+                case 'sphere': targets = genSphere(N); break;
+                case 'cube': targets = genCube(N); break;
+                case 'torus': targets = genTorus(N); break;
+                case 'cylinder': targets = genCylinder(N); break;
+                case 'cone': targets = genCone(N); break;
+                case 'heart': targets = genHeart(N); break;
+                case 'spiral': targets = genSpiral(N); break;
+                case 'text': targets = genText(N, text); break;
+                default: targets = genSphere(N);
+            }
+
+            // Reuse existing particles or create/remove as needed
+            while (particles.length > N) {
+                const p = particles.pop();
+                p.el.remove();
+            }
+
+            for (let i = 0; i < N; i++) {
+                const t = targets[i];
+                if (i < particles.length) {
+                    // Update existing particle target
+                    particles[i].tx = t.x;
+                    particles[i].ty = t.y;
+                    particles[i].tz = t.z;
+                } else {
+                    // Create new particle
+                    const hue = 200 + (t.y + 1) * 40 + Math.random() * 20;
+                    const size = 2 + Math.random() * 2;
+
+                    const el = document.createElement('span');
+                    el.className = 'particle';
+                    el.style.width = size + 'px';
+                    el.style.height = size + 'px';
+                    el.style.setProperty('--hue', Math.round(hue));
+                    container.appendChild(el);
+
+                    particles.push({
+                        el,
+                        // current unit position (will lerp to target)
+                        sx: t.x, sy: t.y, sz: t.z,
+                        // target unit position
+                        tx: t.x, ty: t.y, tz: t.z,
+                        // cursor push offset
+                        ox: 0, oy: 0, oz: 0,
+                    });
+                }
+
+                // Update hue based on position
+                const hue = 200 + (t.y + 1) * 40 + Math.random() * 20;
+                particles[i].el.style.setProperty('--hue', Math.round(hue));
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  ANIMATION LOOP
+        // ═══════════════════════════════════════════════════════
+
+        function animate() {
+            // Apply velocity with friction
+            if (!isDragging) {
+                // Gentle auto-spin when not dragging (adds subtle base rotation)
+                velY += (0.15 - velY) * 0.005;
+                velX *= 0.96;  // friction on X
+            }
+            velY *= 0.96;  // friction on Y
+
+            rotY += velY;
+            rotX += velX;
+            // Clamp X rotation to avoid flipping
+            rotX = Math.max(-89, Math.min(89, rotX));
+
+            const radY = (rotY * Math.PI) / 180;
+            const radX = (rotX * Math.PI) / 180;
+            const cosRY = Math.cos(radY), sinRY = Math.sin(radY);
+            const cosRX = Math.cos(radX), sinRX = Math.sin(radX);
+
+            for (const p of particles) {
+                // Morph: lerp current position towards target
+                p.sx += (p.tx - p.sx) * LERP_MORPH;
+                p.sy += (p.ty - p.sy) * LERP_MORPH;
+                p.sz += (p.tz - p.sz) * LERP_MORPH;
+
+                // Rotate around Y then X
+                const ry1 = p.sx * cosRY + p.sz * sinRY;
+                const ry2 = p.sy;
+                const ry3 = -p.sx * sinRY + p.sz * cosRY;
+
+                const rx = ry1;
+                const ry = ry2 * cosRX - ry3 * sinRX;
+                const rz = ry2 * sinRX + ry3 * cosRX;
+
+                // World position
+                const wx = rx * R;
+                const wy = ry * R;
+                const wz = rz * R;
+
+                // 2D projection
+                const scale2d = 900 / (900 + wz);
+                const projX = wx * scale2d;
+                const projY = wy * scale2d;
+
+                // Cursor repel
+                const dx = projX - mouseX;
+                const dy = projY - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                let pushX = 0, pushY = 0, pushZ = 0;
+                if (dist < CURSOR_RADIUS && dist > 0.1) {
+                    const strength = (1 - dist / CURSOR_RADIUS);
+                    const ease = strength * strength;
+                    const push = ease * PUSH_STRENGTH;
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+                    pushX = nx * push;
+                    pushY = ny * push;
+                    pushZ = push * 0.4;
+                }
+
+                p.ox += (pushX - p.ox) * LERP_PUSH;
+                p.oy += (pushY - p.oy) * LERP_PUSH;
+                p.oz += (pushZ - p.oz) * LERP_PUSH;
+
+                const fx = wx + p.ox;
+                const fy = wy + p.oy;
+                const fz = wz + p.oz;
+
+                // Depth-based opacity
+                const opacity = 0.35 + 0.65 * ((wz + R) / (2 * R));
+                p.el.style.transform = `translate3d(${fx}px, ${fy}px, ${fz}px) scale(${scale2d})`;
+                p.el.style.opacity = opacity;
+            }
+
+            animId = requestAnimationFrame(animate);
+        }
+
+        // ── Kick off ──────────────────────────────────────────
+        generate();
+        animate();
+    </script>
+</body>
+
+</html>

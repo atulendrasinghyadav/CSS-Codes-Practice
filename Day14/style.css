@@ -1,0 +1,267 @@
+/* ── Reset & Page ────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #0d1117 0%, #000 100%);
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    color: #e6edf3;
+}
+
+/* ── Controls Panel ─────────────────────────────────── */
+.controls {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 100;
+    background: rgba(13, 17, 23, 0.6);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-width: 260px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.controls h2 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.control-group label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+/* ── Shared Input Styles ────────────────────────────── */
+.controls select,
+.controls input[type="text"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #e6edf3;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+.controls select:hover,
+.controls input[type="text"]:hover {
+    border-color: rgba(88, 166, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.controls select:focus,
+.controls input[type="text"]:focus {
+    border-color: rgba(88, 166, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+}
+
+.controls select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2358a6ff' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+}
+
+.controls select option {
+    background: #161b22;
+    color: #e6edf3;
+    padding: 8px;
+}
+
+/* ── Range Slider ───────────────────────────────────── */
+.range-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.range-wrap input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+}
+
+.range-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.range-wrap input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 14px rgba(88, 166, 255, 0.6);
+}
+
+.range-value {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 38px;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.65);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Text Input Group ───────────────────────────────── */
+.text-group {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        margin 0.3s ease;
+    margin-top: 0;
+}
+
+.text-group.visible {
+    max-height: 80px;
+    opacity: 1;
+    margin-top: 0;
+}
+
+.controls input[type="text"]::placeholder {
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 400;
+}
+
+/* ── Apply Button ───────────────────────────────────── */
+.btn-apply {
+    appearance: none;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(135deg, #58a6ff, #8b5cf6);
+    box-shadow: 0 4px 16px rgba(88, 166, 255, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    margin-top: 4px;
+}
+
+.btn-apply:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(88, 166, 255, 0.4);
+    filter: brightness(1.1);
+}
+
+.btn-apply:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(88, 166, 255, 0.2);
+}
+
+/* ── 3-D Scene ──────────────────────────────────────── */
+.scene {
+    perspective: 900px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+}
+
+.sphere {
+    position: relative;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+}
+
+/* ── Particles ──────────────────────────────────────── */
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: hsl(var(--hue, 220), 80%, 70%);
+    box-shadow: 0 0 6px 1px hsla(var(--hue, 220), 90%, 60%, 0.35);
+    pointer-events: none;
+    will-change: transform, opacity;
+    transition: opacity 0.3s;
+}
+
+/* ── Hidden Canvas ──────────────────────────────────── */
+#textCanvas {
+    display: none;
+}
+
+/* ── Shape Label ────────────────────────────────────── */
+.shape-label {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+    transition: opacity 0.4s;
+}
+
+/* ── Responsive ─────────────────────────────────────── */
+@media (max-width: 600px) {
+    .controls {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        min-width: unset;
+        padding: 18px 20px;
+        border-radius: 16px;
+    }
+}
