@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Streak Shooter 🚀</title>
+    <meta name="description"
+        content="Shoot down the GitHub contribution streak with your rocket! A fun browser-based arcade game.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-wrapper">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- HUD -->
+        <div id="hud">
+            <div class="hud-item">
+                <span class="hud-label">SCORE</span>
+                <span class="hud-value" id="hud-score">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">CELLS LEFT</span>
+                <span class="hud-value" id="hud-cells">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">ACCURACY</span>
+                <span class="hud-value" id="hud-accuracy">0%</span>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay">
+            <div class="overlay-content">
+                <h1 class="game-title">
+                    <span class="title-rocket">🚀</span>
+                    <span class="title-text">STREAK<br>SHOOTER</span>
+                </h1>
+                <p class="subtitle">Destroy the GitHub contribution streak!</p>
+                <div class="instructions">
+                    <div class="instruction-row">
+                        <kbd>SPACE</kbd>
+                        <span>or</span>
+                        <kbd>CLICK</kbd>
+                        <span>to shoot</span>
+                    </div>
+                    <p class="instruction-note">The rocket flies automatically — you just shoot!</p>
+                </div>
+                <button id="start-btn" class="glow-btn">LAUNCH MISSION</button>
+            </div>
+        </div>
+
+        <!-- Win Screen -->
+        <div id="win-screen" class="overlay hidden">
+            <div class="overlay-content">
+                <h1 class="win-title">🎉 STREAK CLEARED!</h1>
+                <p class="win-subtitle">All contributions have been obliterated!</p>
+                <div id="win-stats" class="win-stats"></div>
+                <button id="replay-btn" class="glow-btn">PLAY AGAIN</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
