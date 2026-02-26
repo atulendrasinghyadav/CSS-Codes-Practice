@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Blob Loading Animation</title>
+    <meta name="description" content="A mesmerizing morphing liquid blob loading animation with aurora gradients.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- SVG Filter for the gooey/liquid merge effect -->
+    <svg style="position:absolute;width:0;height:0">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 20 -10" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="scene">
+        <!-- Animated blob group -->
+        <div class="blob-container" id="blobContainer">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+            <div class="blob blob-4"></div>
+        </div>
+
+        <!-- Circular progress ring -->
+        <svg class="ring-svg" viewBox="0 0 200 200">
+            <circle class="ring-track" cx="100" cy="100" r="88" />
+            <circle class="ring-fill" id="ringFill" cx="100" cy="100" r="88" />
+        </svg>
+
+        <!-- Center text -->
+        <div class="center-text">
+            <span class="pct" id="pct">0</span>
+            <span class="pct-sign">%</span>
+        </div>
+    </div>
+
+    <!-- Bottom label -->
+    <div class="label-group">
+        <div class="label-bar">
+            <span class="bar-dot"></span>
+            <span class="bar-dot"></span>
+            <span class="bar-dot"></span>
+        </div>
+        <p class="label" id="label">Loading</p>
+    </div>
+
+    <!-- Floating micro-particles -->
+    <canvas id="particleCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

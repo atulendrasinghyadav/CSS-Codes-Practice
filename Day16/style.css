@@ -1,0 +1,303 @@
+/* === Reset === */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background: #0b0b1a;
+    overflow: hidden;
+    position: relative;
+}
+
+/* === Ambient background glow === */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(100px);
+    z-index: 0;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    left: -100px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent 70%);
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    bottom: -80px;
+    right: -80px;
+    background: radial-gradient(circle, rgba(244, 114, 182, 0.1), transparent 70%);
+}
+
+/* === Particle Canvas === */
+#particleCanvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* === Scene wrapper === */
+.scene {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* === Blob Container (gooey filter) === */
+.blob-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: url(#goo);
+}
+
+/* === Individual Blobs === */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.blob-1 {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    animation: morphA 6s ease-in-out infinite;
+}
+
+.blob-2 {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #ec4899, #f472b6);
+    animation: morphB 6s ease-in-out infinite;
+}
+
+.blob-3 {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #06b6d4, #38bdf8);
+    animation: morphC 6s ease-in-out infinite;
+}
+
+.blob-4 {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #a78bfa, #c084fc);
+    animation: morphD 6s ease-in-out infinite;
+}
+
+/* Blob morph keyframes — each blob orbits & stretches differently */
+@keyframes morphA {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) translate(40px, -30px) scale(1.15);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translate(-20px, 40px) scale(0.9);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) translate(-40px, -20px) scale(1.1);
+    }
+}
+
+@keyframes morphB {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) translate(-35px, 35px) scale(1.1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translate(30px, -25px) scale(0.85);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) translate(25px, 30px) scale(1.2);
+    }
+}
+
+@keyframes morphC {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) translate(30px, 25px) scale(0.9);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translate(-35px, -30px) scale(1.15);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) translate(20px, -35px) scale(1.05);
+    }
+}
+
+@keyframes morphD {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(-50%, -50%) translate(-25px, -35px) scale(1.2);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) translate(35px, 20px) scale(0.9);
+    }
+
+    75% {
+        transform: translate(-50%, -50%) translate(-30px, 25px) scale(1.1);
+    }
+}
+
+/* === Circular Progress Ring (SVG) === */
+.ring-svg {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+    z-index: 2;
+}
+
+.ring-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.04);
+    stroke-width: 2;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: url(#ringGrad);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 553;
+    /* 2π × 88 */
+    stroke-dashoffset: 553;
+    transition: stroke-dashoffset 0.12s linear;
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.6));
+}
+
+/* === Center Percentage === */
+.center-text {
+    position: absolute;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    z-index: 3;
+}
+
+.pct {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+}
+
+.pct-sign {
+    font-size: 1rem;
+    font-weight: 200;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* === Bottom Label === */
+.label-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    z-index: 1;
+}
+
+.label-bar {
+    display: flex;
+    gap: 6px;
+}
+
+.bar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    animation: dotBounce 1.4s ease-in-out infinite;
+}
+
+.bar-dot:nth-child(1) {
+    animation-delay: 0s;
+    background: #6366f1;
+}
+
+.bar-dot:nth-child(2) {
+    animation-delay: 0.2s;
+    background: #ec4899;
+}
+
+.bar-dot:nth-child(3) {
+    animation-delay: 0.4s;
+    background: #06b6d4;
+}
+
+@keyframes dotBounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    40% {
+        transform: scale(1.8);
+        opacity: 1;
+    }
+}
+
+.label {
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+}
