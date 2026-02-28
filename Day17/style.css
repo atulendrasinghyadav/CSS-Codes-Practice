@@ -1,0 +1,320 @@
+/* ═══════════════════════════════════════════════════
+   Card Hover Animation — Pure CSS
+   Card recedes into background, details slide in
+   ═══════════════════════════════════════════════════ */
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #0b0d17;
+  color: #e4e6f0;
+  padding: 60px 24px;
+  overflow-x: hidden;
+}
+
+/* subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Page Title ---------- */
+.page-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 60px;
+  background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ---------- Cards Container ---------- */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 1240px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Card Wrapper (holds both card + details) ---------- */
+.card-wrapper {
+  position: relative;
+  height: 380px;
+  perspective: 900px;
+  cursor: pointer;
+}
+
+/* ---------- The Visual Card ---------- */
+.card {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 2;
+  transition:
+    transform 0.55s cubic-bezier(.4, 0, .2, 1),
+    opacity 0.55s cubic-bezier(.4, 0, .2, 1),
+    filter 0.55s cubic-bezier(.4, 0, .2, 1),
+    box-shadow 0.55s cubic-bezier(.4, 0, .2, 1);
+  overflow: hidden;
+}
+
+/* Glassmorphism base */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: -1;
+  transition: border-color 0.4s ease;
+}
+
+/* Accent glow per card */
+.card[data-accent="1"]::before { box-shadow: inset 0 0 60px rgba(167, 139, 250, 0.08); }
+.card[data-accent="2"]::before { box-shadow: inset 0 0 60px rgba(96, 165, 250, 0.08); }
+.card[data-accent="3"]::before { box-shadow: inset 0 0 60px rgba(251, 191, 36, 0.08); }
+.card[data-accent="4"]::before { box-shadow: inset 0 0 60px rgba(52, 211, 153, 0.08); }
+
+/* Decorative corner accent */
+.card::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -40%;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  opacity: 0.12;
+  filter: blur(60px);
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+
+.card[data-accent="1"]::after { background: #a78bfa; }
+.card[data-accent="2"]::after { background: #60a5fa; }
+.card[data-accent="3"]::after { background: #fbbf24; }
+.card[data-accent="4"]::after { background: #34d399; }
+
+/* ---------- Card Icon ---------- */
+.card-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.4s ease;
+}
+
+.card-icon svg {
+  width: 44px;
+  height: 44px;
+}
+
+.card[data-accent="1"] .card-icon { color: #a78bfa; }
+.card[data-accent="2"] .card-icon { color: #60a5fa; }
+.card[data-accent="3"] .card-icon { color: #fbbf24; }
+.card[data-accent="4"] .card-icon { color: #34d399; }
+
+/* ---------- Card Text ---------- */
+.card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 5px 16px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Card Details (hidden by default) ---------- */
+.card-details {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 36px 32px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.5s cubic-bezier(.4, 0, .2, 1) 0.1s,
+    transform 0.5s cubic-bezier(.4, 0, .2, 1) 0.1s;
+  pointer-events: none;
+}
+
+.detail-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.card-details h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff, rgba(255,255,255,0.6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-details p {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+
+.detail-features {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.detail-features li {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.04);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════════
+   HOVER STATE — Card recedes, details appear
+   ═══════════════════════════════════════════════════ */
+
+/* Card shrinks, blurs, and fades into the background */
+.card-wrapper:hover .card {
+  transform: scale(0.82) translateY(10px) rotateX(4deg);
+  opacity: 0.15;
+  filter: blur(6px) saturate(0.5);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-wrapper:hover .card::before {
+  border-color: transparent;
+}
+
+.card-wrapper:hover .card::after {
+  opacity: 0.04;
+}
+
+/* Details slide up and become visible */
+.card-wrapper:hover .card-details {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Feature pills highlight on wrapper hover based on accent */
+.card-wrapper:hover .detail-features li {
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- Accent-specific detail badge color on hover ---------- */
+.card-wrapper:has(.card[data-accent="1"]):hover .detail-badge {
+  background: rgba(167, 139, 250, 0.15);
+  border-color: rgba(167, 139, 250, 0.3);
+  color: #a78bfa;
+}
+.card-wrapper:has(.card[data-accent="2"]):hover .detail-badge {
+  background: rgba(96, 165, 250, 0.15);
+  border-color: rgba(96, 165, 250, 0.3);
+  color: #60a5fa;
+}
+.card-wrapper:has(.card[data-accent="3"]):hover .detail-badge {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fbbf24;
+}
+.card-wrapper:has(.card[data-accent="4"]):hover .detail-badge {
+  background: rgba(52, 211, 153, 0.15);
+  border-color: rgba(52, 211, 153, 0.3);
+  color: #34d399;
+}
+
+/* ═══════════════════════════════════════════════════
+   Responsive
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .card-wrapper {
+    height: 360px;
+  }
+
+  .page-title {
+    margin-bottom: 40px;
+  }
+}
