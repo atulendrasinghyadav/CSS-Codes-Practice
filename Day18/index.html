@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Flip Cards</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <h1 class="page-title">Flip <span>Animation</span></h1>
+    <p class="page-subtitle">Hover to preview · Click to reveal details</p>
+
+    <div class="cards-container">
+
+        <!-- Card 1 -->
+        <div class="card-wrapper">
+            <div class="card">
+                <!-- Front -->
+                <div class="card-face card-front card-front--design">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <circle cx="32" cy="32" r="28" stroke="url(#g1)" stroke-width="3" />
+                            <path d="M22 38c0-6 4-10 10-10s10 4 10 10" stroke="url(#g1)" stroke-width="2.5"
+                                stroke-linecap="round" />
+                            <circle cx="32" cy="22" r="5" fill="url(#g1)" />
+                            <defs>
+                                <linearGradient id="g1" x1="0" y1="0" x2="64" y2="64">
+                                    <stop stop-color="#a78bfa" />
+                                    <stop offset="1" stop-color="#6d28d9" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h2 class="card-title">UI / UX Design</h2>
+                    <p class="card-snippet">Crafting pixel-perfect interfaces that users love.</p>
+                    <span class="card-cta">Click to learn more &rarr;</span>
+                    <div class="card-glow"></div>
+                </div>
+                <!-- Back -->
+                <div class="card-face card-back card-back--design">
+                    <h3>Design Details</h3>
+                    <ul>
+                        <li>🎨 Wireframing & Prototyping</li>
+                        <li>🖌️ Visual Design Systems</li>
+                        <li>📱 Responsive Layouts</li>
+                        <li>⚡ Micro-interactions</li>
+                        <li>🧪 Usability Testing</li>
+                    </ul>
+                    <p class="back-desc">We turn ideas into stunning, user-centric products with attention to every
+                        detail.</p>
+                    <span class="card-cta">Click to go back &larr;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-face card-front card-front--dev">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <rect x="8" y="14" width="48" height="36" rx="6" stroke="url(#g2)" stroke-width="3" />
+                            <path d="M24 30l-6 6 6 6M40 30l6 6-6 6M34 26l-4 16" stroke="url(#g2)" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <defs>
+                                <linearGradient id="g2" x1="0" y1="0" x2="64" y2="64">
+                                    <stop stop-color="#38bdf8" />
+                                    <stop offset="1" stop-color="#0284c7" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h2 class="card-title">Web Development</h2>
+                    <p class="card-snippet">Building performant, scalable web applications.</p>
+                    <span class="card-cta">Click to learn more &rarr;</span>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="card-face card-back card-back--dev">
+                    <h3>Development Details</h3>
+                    <ul>
+                        <li>💻 Frontend (React, Vue, Svelte)</li>
+                        <li>🔧 Backend (Node, Python, Go)</li>
+                        <li>🗄️ Database Architecture</li>
+                        <li>☁️ Cloud Deployments</li>
+                        <li>🔐 Security & Auth</li>
+                    </ul>
+                    <p class="back-desc">Full-stack mastery — from your first line of code to production at scale.</p>
+                    <span class="card-cta">Click to go back &larr;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card-wrapper">
+            <div class="card">
+                <div class="card-face card-front card-front--ai">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 64 64" fill="none">
+                            <circle cx="32" cy="20" r="8" stroke="url(#g3)" stroke-width="2.5" />
+                            <circle cx="18" cy="44" r="6" stroke="url(#g3)" stroke-width="2.5" />
+                            <circle cx="46" cy="44" r="6" stroke="url(#g3)" stroke-width="2.5" />
+                            <line x1="28" y1="26" x2="20" y2="39" stroke="url(#g3)" stroke-width="2" />
+                            <line x1="36" y1="26" x2="44" y2="39" stroke="url(#g3)" stroke-width="2" />
+                            <line x1="24" y1="44" x2="40" y2="44" stroke="url(#g3)" stroke-width="2" />
+                            <defs>
+                                <linearGradient id="g3" x1="0" y1="0" x2="64" y2="64">
+                                    <stop stop-color="#f472b6" />
+                                    <stop offset="1" stop-color="#db2777" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h2 class="card-title">AI & ML Solutions</h2>
+                    <p class="card-snippet">Intelligent systems that learn, adapt & predict.</p>
+                    <span class="card-cta">Click to learn more &rarr;</span>
+                    <div class="card-glow"></div>
+                </div>
+                <div class="card-face card-back card-back--ai">
+                    <h3>AI / ML Details</h3>
+                    <ul>
+                        <li>🤖 Custom Model Training</li>
+                        <li>📊 Data Pipeline Design</li>
+                        <li>🧠 NLP & Computer Vision</li>
+                        <li>🚀 MLOps & Deployment</li>
+                        <li>📈 Predictive Analytics</li>
+                    </ul>
+                    <p class="back-desc">From raw data to actionable intelligence — we make machines work smarter for
+                        you.</p>
+                    <span class="card-cta">Click to go back &larr;</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
