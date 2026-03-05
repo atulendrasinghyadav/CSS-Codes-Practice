@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A creative login form with a lamp toggle switch that illuminates the form when turned on." />
+  <title>Lamp Toggle Login Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scene" id="scene">
+
+    <!-- Lamp Assembly -->
+    <div class="lamp-assembly">
+      <div class="lamp-wire"></div>
+      <div class="lamp-fixture">
+        <div class="lamp-cap"></div>
+        <div class="lamp-bulb" id="lampBulb">
+          <div class="filament"></div>
+        </div>
+        <div class="lamp-glow" id="lampGlow"></div>
+      </div>
+      <div class="lamp-pull">
+        <div class="pull-string" id="pullString"></div>
+        <div class="pull-knob" id="pullKnob"></div>
+      </div>
+    </div>
+
+    <!-- Light Cone -->
+    <div class="light-cone" id="lightCone"></div>
+
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+      <div class="login-card">
+        <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to your account</p>
+
+        <form id="loginForm" autocomplete="off">
+          <div class="input-group">
+            <div class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <input type="text" id="username" placeholder="Username" required />
+            <div class="input-line"></div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <input type="password" id="password" placeholder="Password" required />
+            <div class="input-line"></div>
+          </div>
+
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe" />
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="login-btn" id="loginBtn">
+            <span>Sign In</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="signup-link">
+          Don't have an account? <a href="#">Sign up</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Instruction -->
+    <div class="instruction" id="instruction">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16">
+        <path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-2.3C6.2 13.5 5 11.4 5 9a7 7 0 0 1 7-7z"/>
+        <line x1="9" y1="21" x2="15" y2="21"/>
+      </svg>
+      Pull the string to turn on the lamp
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
