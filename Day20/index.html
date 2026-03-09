@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎂 Happy Birthday! 🎉</title>
+    <meta name="description"
+        content="A beautiful animated birthday wish with party poppers, layered cake, and candle." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Particle container for party poppers -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="scene">
+        <!-- Birthday message -->
+        <h1 class="title" id="title">Happy Birthday! 🎉</h1>
+        <p class="subtitle" id="subtitle">Wishing you a wonderful day filled with joy!</p>
+
+        <!-- Cake container -->
+        <div class="cake-wrapper" id="cake-wrapper">
+            <!-- Ambient glow behind cake -->
+            <div class="cake-aura"></div>
+
+            <!-- Cake layers (built bottom-up) -->
+            <div class="cake">
+                <!-- Layer 1 – Chocolate (bottom, widest) -->
+                <div class="layer layer-1" id="layer1">
+                    <div class="layer-texture"></div>
+                    <div class="sprinkles">
+                        <span class="sprinkle s1"></span><span class="sprinkle s2"></span>
+                        <span class="sprinkle s3"></span><span class="sprinkle s4"></span>
+                        <span class="sprinkle s5"></span><span class="sprinkle s6"></span>
+                        <span class="sprinkle s7"></span><span class="sprinkle s8"></span>
+                    </div>
+                    <div class="rosettes">
+                        <span class="rosette r1"></span><span class="rosette r2"></span>
+                        <span class="rosette r3"></span><span class="rosette r4"></span>
+                        <span class="rosette r5"></span>
+                    </div>
+                    <div class="cream cream-1" id="cream1">
+                    </div>
+                </div>
+
+                <!-- Layer 2 – Red Velvet (middle) -->
+                <div class="layer layer-2" id="layer2">
+                    <div class="layer-texture"></div>
+                    <div class="sprinkles">
+                        <span class="sprinkle s1"></span><span class="sprinkle s2"></span>
+                        <span class="sprinkle s3"></span><span class="sprinkle s4"></span>
+                        <span class="sprinkle s5"></span><span class="sprinkle s6"></span>
+                    </div>
+                    <div class="rosettes">
+                        <span class="rosette r1"></span><span class="rosette r2"></span>
+                        <span class="rosette r3"></span><span class="rosette r4"></span>
+                    </div>
+                    <div class="cream cream-2" id="cream2">
+                    </div>
+                </div>
+
+                <!-- Layer 3 – Vanilla (top, smallest) -->
+                <div class="layer layer-3" id="layer3">
+                    <div class="layer-texture"></div>
+                    <div class="sprinkles">
+                        <span class="sprinkle s1"></span><span class="sprinkle s2"></span>
+                        <span class="sprinkle s3"></span><span class="sprinkle s4"></span>
+                    </div>
+                    <div class="cream cream-3" id="cream3">
+                    </div>
+                </div>
+
+                <!-- Candle -->
+                <div class="candle-group" id="candle-group">
+                    <div class="candle">
+                        <div class="candle-body">
+                            <div class="candle-stripe"></div>
+                            <div class="candle-stripe stripe-2"></div>
+                        </div>
+                        <div class="wick"></div>
+                        <div class="flame-wrapper">
+                            <div class="flame">
+                                <div class="flame-inner"></div>
+                            </div>
+                            <div class="glow"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plate"></div>
+        </div>
+
+        <!-- Blow button -->
+        <button class="blow-btn" id="blow-btn">🎂 Make a Wish & Blow! 🎂</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
