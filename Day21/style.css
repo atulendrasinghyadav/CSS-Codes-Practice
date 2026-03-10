@@ -1,0 +1,263 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0bc4e2, #2441cc);
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+.container {
+    padding: 80px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Base card structure with transitions */
+.card {
+    position: relative;
+    background: #111418;
+    border-radius: 28px;
+    display: flex;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+    /* Elegant bouncy transition */
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.card-image {
+    position: absolute;
+    /* Simulated image matching reference but without using imported images */
+    background: linear-gradient(135deg, #06b6d4, #0f172a);
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* Texture overlay to make gradient look more like a photo layer */
+.card-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    mix-blend-mode: overlay;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+    z-index: 5;
+}
+
+h2 {
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 4px;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+}
+
+h3 {
+    font-weight: 500;
+    color: #a1a1aa;
+    margin-bottom: 20px;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+}
+
+p {
+    color: #8f8f96;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 380px;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+}
+
+.actions {
+    display: flex;
+    transition: all 0.7s cubic-bezier(0.34, 1.15, 0.2, 1);
+}
+
+button {
+    font-family: inherit;
+    font-weight: 500;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid #3f3f46;
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #ffffff;
+}
+
+.btn-solid {
+    background: #ffffff;
+    color: #111418;
+    border: 1px solid #ffffff;
+}
+
+.btn-solid:hover {
+    background: #e4e4e7;
+    border-color: #e4e4e7;
+}
+
+/* =========================================
+   DESKTOP STATE 
+   ========================================= */
+.card.desktop {
+    width: 780px;
+    height: 400px;
+    padding: 40px 40px 40px 320px;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.card.desktop .card-image {
+    left: -40px;
+    top: -30px;
+    width: 320px;
+    height: 460px;
+    border-radius: 20px;
+}
+
+.card.desktop .card-content {
+    align-items: flex-start;
+}
+
+.card.desktop h2 {
+    font-size: 32px;
+}
+
+.card.desktop h3 {
+    font-size: 16px;
+}
+
+.card.desktop p {
+    font-size: 15px;
+}
+
+.card.desktop .actions {
+    justify-content: flex-start;
+    gap: 16px;
+}
+
+.card.desktop button {
+    padding: 12px 32px;
+    font-size: 16px;
+}
+
+/* =========================================
+   TABLET STATE 
+   ========================================= */
+.card.tablet {
+    width: 480px;
+    min-height: 520px;
+    padding: 300px 40px 40px;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.card.tablet .card-image {
+    left: 40px;
+    top: -40px;
+    width: 400px;
+    height: 300px;
+    border-radius: 20px;
+}
+
+.card.tablet .card-content {
+    align-items: center;
+}
+
+.card.tablet h2 {
+    font-size: 28px;
+}
+
+.card.tablet h3 {
+    font-size: 15px;
+}
+
+.card.tablet p {
+    font-size: 14px;
+}
+
+.card.tablet .actions {
+    justify-content: center;
+    gap: 16px;
+}
+
+.card.tablet button {
+    padding: 10px 28px;
+    font-size: 15px;
+}
+
+/* =========================================
+   MOBILE STATE 
+   ========================================= */
+.card.mobile {
+    width: 320px;
+    min-height: 440px;
+    padding: 120px 24px 30px;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.card.mobile .card-image {
+    left: 50%;
+    transform: translateX(-50%);
+    top: -60px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.card.mobile .card-content {
+    align-items: center;
+}
+
+.card.mobile h2 {
+    font-size: 24px;
+}
+
+.card.mobile h3 {
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+.card.mobile p {
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.card.mobile .actions {
+    justify-content: center;
+    width: 100%;
+    gap: 12px;
+}
+
+.card.mobile button {
+    padding: 10px 20px;
+    font-size: 14px;
+    flex: 1;
+    /* Stretch to fill space horizontally side-by-side */
+}
