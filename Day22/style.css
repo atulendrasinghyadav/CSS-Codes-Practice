@@ -1,0 +1,480 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --liquid-blue: #4285f4;
+    --liquid-purple: #c850c0;
+    --liquid-cyan: #00d2ff;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --body-bg: #0a0b0f;
+    --card-width: 340px;
+    --card-height: 500px;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--body-bg);
+    overflow: hidden;
+    color: #fff;
+}
+
+/* Ambient background blobs */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.25;
+    z-index: -2;
+    animation: float-blob 10s ease-in-out infinite alternate;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: var(--liquid-purple);
+    top: -15%;
+    left: -10%;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: var(--liquid-cyan);
+    bottom: -10%;
+    right: -10%;
+    animation-delay: -5s;
+}
+
+@keyframes float-blob {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(40px, 30px) scale(1.15);
+    }
+}
+
+/* Ambient floating particles */
+.ambient-particles {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.ambient-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    animation: drift linear infinite;
+}
+
+@keyframes drift {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Container */
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1200px;
+}
+
+/* ===================== GLASS CARD ===================== */
+.glass-card {
+    position: relative;
+    width: var(--card-width);
+    height: var(--card-height);
+    background: var(--card-bg);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: box-shadow 0.5s ease;
+    transform-style: preserve-3d;
+    cursor: none;
+}
+
+.glass-card:hover {
+    box-shadow:
+        0 35px 70px rgba(0, 0, 0, 0.6),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(66, 133, 244, 0.15),
+        0 0 80px rgba(200, 80, 192, 0.1);
+}
+
+/* Cursor glow that follows the mouse */
+.glow-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 24px;
+}
+
+.glass-card:hover .glow-overlay {
+    opacity: 1;
+}
+
+/* Shimmer border animation */
+.shimmer-border {
+    position: absolute;
+    inset: -1px;
+    border-radius: 25px;
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: conic-gradient(from var(--shimmer-angle, 0deg),
+            transparent 0%,
+            rgba(255, 255, 255, 0.15) 10%,
+            transparent 20%,
+            transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    padding: 2px;
+    animation: shimmer-rotate 4s linear infinite;
+}
+
+.glass-card:hover .shimmer-border {
+    opacity: 1;
+}
+
+@property --shimmer-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes shimmer-rotate {
+    0% {
+        --shimmer-angle: 0deg;
+    }
+
+    100% {
+        --shimmer-angle: 360deg;
+    }
+}
+
+/* ===================== CONTENT ===================== */
+.content {
+    position: relative;
+    z-index: 10;
+    padding: 40px 35px 30px;
+    text-align: center;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Icon ring */
+.icon-ring {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    transition: 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-up 0.6s 0.1s forwards;
+}
+
+.icon-ring svg {
+    width: 28px;
+    height: 28px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: 0.4s;
+}
+
+.glass-card:hover .icon-ring {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 20px rgba(66, 133, 244, 0.3);
+}
+
+.glass-card:hover .icon-ring svg {
+    color: #fff;
+    filter: drop-shadow(0 0 6px rgba(66, 133, 244, 0.5));
+}
+
+/* Fade-in-up for staggered content reveal */
+@keyframes fade-in-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #fff 30%, #aeb6dc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-up 0.6s 0.2s forwards;
+}
+
+.content p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.55);
+    max-width: 250px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-up 0.6s 0.35s forwards;
+}
+
+/* CTA Button */
+.content a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.35s ease;
+    pointer-events: auto;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-in-up 0.6s 0.5s forwards;
+}
+
+.content a svg {
+    transition: transform 0.3s ease;
+}
+
+.content a:hover {
+    background: #fff;
+    color: var(--body-bg);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    transform: scale(1.06);
+    border-color: transparent;
+}
+
+.content a:hover svg {
+    transform: translateX(4px);
+}
+
+/* Card footer tags */
+.card-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-in-up 0.6s 0.6s forwards;
+}
+
+.tag {
+    padding: 5px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    transition: 0.4s;
+}
+
+.glass-card:hover .tag {
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===================== LIQUID FILL ===================== */
+.liquids {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.liquid {
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    left: 50%;
+    bottom: -750px;
+    transform: translateX(-50%);
+    transition: bottom 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Back wave – cyan */
+.liquid-one {
+    background: rgba(0, 210, 255, 0.35);
+    border-radius: 43%;
+    animation: wave 5s linear infinite;
+    bottom: -760px;
+}
+
+/* Mid wave – blue */
+.liquid-two {
+    background: rgba(66, 133, 244, 0.5);
+    border-radius: 40%;
+    animation: wave 7s linear infinite reverse;
+}
+
+/* Front wave – purple gradient */
+.liquid-three {
+    background: linear-gradient(0deg, rgba(200, 80, 192, 0.7), rgba(66, 133, 244, 0.7));
+    border-radius: 41%;
+    animation: wave 9s linear infinite;
+    bottom: -755px;
+}
+
+/* On hover – stagger the rise */
+.glass-card:hover .liquid-one {
+    bottom: -340px;
+    transition-delay: 0s;
+}
+
+.glass-card:hover .liquid-two {
+    bottom: -370px;
+    transition-delay: 0.08s;
+}
+
+.glass-card:hover .liquid-three {
+    bottom: -400px;
+    transition-delay: 0.16s;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(-50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translateX(-50%) rotate(360deg);
+    }
+}
+
+/* ===================== BUBBLES ===================== */
+.bubbles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Custom cursor dot */
+.cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%) scale(0);
+}
+
+.cursor-dot.visible {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.cursor-ring.hovering-btn {
+    width: 52px;
+    height: 52px;
+    border-color: rgba(255, 255, 255, 0.7);
+}

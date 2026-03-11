@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Fill Card</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Floating ambient particles -->
+    <div class="ambient-particles" id="ambientParticles"></div>
+
+    <div class="container">
+        <div class="glass-card" id="card">
+            <!-- Cursor glow overlay -->
+            <div class="glow-overlay" id="glowOverlay"></div>
+
+            <!-- Edge shimmer border -->
+            <div class="shimmer-border"></div>
+
+            <!-- Liquid layers -->
+            <div class="liquids">
+                <div class="liquid liquid-one"></div>
+                <div class="liquid liquid-two"></div>
+                <div class="liquid liquid-three"></div>
+            </div>
+
+            <!-- Bubble particles inside the liquid -->
+            <div class="bubbles" id="bubbles"></div>
+
+            <!-- Card content -->
+            <div class="content">
+                <!-- Icon -->
+                <div class="icon-ring">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                    </svg>
+                </div>
+                <h2>Liquid Fill</h2>
+                <p>Hover to watch the liquid rise with mesmerizing waves and bubbles.</p>
+                <a href="#" id="exploreBtn">
+                    <span>Explore</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Bottom label -->
+            <div class="card-footer">
+                <span class="tag">CSS Magic</span>
+                <span class="tag">Interactive</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
