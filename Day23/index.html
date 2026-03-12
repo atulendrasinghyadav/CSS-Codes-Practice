@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RGB Glitch Effect</title>
+    <meta name="description" content="Classic RGB channel-split glitch effect using HTML, CSS, and JavaScript" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <!-- Noise overlay -->
+    <canvas id="noiseCanvas"></canvas>
+
+    <!-- Scanlines -->
+    <div class="scanlines"></div>
+
+    <!-- Vignette -->
+    <div class="vignette"></div>
+
+    <main class="container">
+
+        <!-- Main glitch text -->
+        <div class="glitch-wrapper" id="glitchWrapper">
+            <h1 class="glitch" data-text="GLITCH">
+                <span class="glitch__layer glitch__layer--r" aria-hidden="true">GLITCH</span>
+                <span class="glitch__layer glitch__layer--g" aria-hidden="true">GLITCH</span>
+                <span class="glitch__layer glitch__layer--b" aria-hidden="true">GLITCH</span>
+                GLITCH
+            </h1>
+        </div>
+
+        <!-- Subtitle -->
+        <p class="subtitle" id="subtitle">
+            <span class="bracket">[</span>
+            <span class="subtitle-text">RGB CHANNEL SPLIT</span>
+            <span class="bracket">]</span>
+        </p>
+
+        <!-- Glitch bars (horizontal distortion bands) -->
+        <div class="glitch-bars" id="glitchBars"></div>
+
+        <!-- Status line -->
+        <div class="status-line" id="statusLine">
+            <span class="status-dot"></span>
+            <span class="status-text">SIGNAL_CORRUPT</span>
+            <span class="status-code" id="statusCode">0xFF00FF</span>
+        </div>
+
+        <!-- Grid decoration -->
+        <div class="grid-decoration">
+            <div class="grid-corner grid-corner--tl"></div>
+            <div class="grid-corner grid-corner--tr"></div>
+            <div class="grid-corner grid-corner--bl"></div>
+            <div class="grid-corner grid-corner--br"></div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
