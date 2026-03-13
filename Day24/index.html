@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG Draw Border — Stroke by Stroke</title>
+  <meta name="description" content="An SVG border that draws itself stroke by stroke with stunning animation effects." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="scene">
+    <!-- Ambient particles -->
+    <div class="particles" id="particles"></div>
+
+    <h1 class="title">SVG Draw Border</h1>
+    <p class="subtitle">Watch the border draw itself — stroke by stroke</p>
+
+    <div class="cards-grid">
+
+      <!-- Card 1: Sequential Stroke Draw -->
+      <div class="card-wrapper" id="card1">
+        <svg class="border-svg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line class="border-line line-top"    x1="4" y1="4" x2="336" y2="4" />
+          <line class="border-line line-right"  x1="336" y1="4" x2="336" y2="216" />
+          <line class="border-line line-bottom" x1="336" y1="216" x2="4" y2="216" />
+          <line class="border-line line-left"   x1="4" y1="216" x2="4" y2="4" />
+        </svg>
+        <div class="card-content">
+          <div class="card-icon">✦</div>
+          <h2>Sequential</h2>
+          <p>Each side draws one after the other in a clockwise flow.</p>
+        </div>
+        <div class="corner-dot dot-tl"></div>
+        <div class="corner-dot dot-tr"></div>
+        <div class="corner-dot dot-br"></div>
+        <div class="corner-dot dot-bl"></div>
+      </div>
+
+      <!-- Card 2: Rounded Rect Draw -->
+      <div class="card-wrapper" id="card2">
+        <svg class="border-svg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect class="border-rect" x="4" y="4" width="332" height="212" rx="16" ry="16" />
+        </svg>
+        <div class="card-content">
+          <div class="card-icon">◆</div>
+          <h2>Continuous</h2>
+          <p>A single path traces the entire rounded border seamlessly.</p>
+        </div>
+      </div>
+
+      <!-- Card 3: Dual-Stroke Converge -->
+      <div class="card-wrapper" id="card3">
+        <svg class="border-svg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="border-path path-a" d="M170 4 L336 4 L336 216 L170 216" />
+          <path class="border-path path-b" d="M170 4 L4 4 L4 216 L170 216" />
+        </svg>
+        <div class="card-content">
+          <div class="card-icon">⟐</div>
+          <h2>Converge</h2>
+          <p>Two strokes race from center-top, meeting at center-bottom.</p>
+        </div>
+      </div>
+
+      <!-- Card 4: Dashed Draw -->
+      <div class="card-wrapper" id="card4">
+        <svg class="border-svg" viewBox="0 0 340 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect class="border-dashed" x="4" y="4" width="332" height="212" rx="8" ry="8" />
+        </svg>
+        <div class="card-content">
+          <div class="card-icon">⊞</div>
+          <h2>Dashed</h2>
+          <p>A dashed border materializes segment by segment around the card.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-primary" id="btnPlay">
+        <span class="btn-icon">▶</span> Play Animation
+      </button>
+      <button class="btn btn-secondary" id="btnReset">
+        <span class="btn-icon">↺</span> Reset
+      </button>
+      <div class="speed-control">
+        <label for="speedRange">Speed</label>
+        <input type="range" id="speedRange" min="0.3" max="3" step="0.1" value="1" />
+        <span class="speed-value" id="speedValue">1×</span>
+      </div>
+    </div>
+
+    <p class="hint">Hover over cards or press Play to trigger the animation</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
