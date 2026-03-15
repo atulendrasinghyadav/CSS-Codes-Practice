@@ -1,0 +1,212 @@
+/* ── Reset & Page ────────────────────────────── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0c0c10;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── Cart Button ─────────────────────────────── */
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 40px;
+  min-width: 220px;
+  border: none;
+  border-radius: 60px;
+  background: linear-gradient(135deg, #6c3bff 0%, #a855f7 100%);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.25s ease, box-shadow 0.35s ease, background 0.5s ease;
+  box-shadow: 0 4px 24px rgba(108, 59, 255, 0.4);
+}
+
+.cart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 32px rgba(108, 59, 255, 0.55);
+}
+
+.cart-btn:active {
+  transform: scale(0.97);
+}
+
+.cart-btn.animating {
+  pointer-events: none;
+}
+
+/* ── Cart Icon ───────────────────────────────── */
+.cart-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  z-index: 3;
+  transition: transform 0.1s ease;
+}
+
+.cart-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* ── Phase 1: Item drops into cart ───────────── */
+.cart-btn.phase-drop .cart-icon {
+  animation: cartReceive 0.35s ease 0.3s;
+}
+
+@keyframes cartReceive {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(-8deg) translateY(2px); }
+  60%  { transform: rotate(4deg) translateY(-1px); }
+  100% { transform: rotate(0deg) translateY(0); }
+}
+
+/* ── Phase 2: Cart slides right, wiping the text ─ */
+.cart-btn.phase-wipe .cart-icon {
+  animation: cartSlideRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes cartSlideRight {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(calc(var(--btn-width, 180px) - 40px)); }
+}
+
+/* ── Item Ball ───────────────────────────────── */
+.item-ball {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  pointer-events: none;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.7));
+}
+
+.item-ball svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cart-btn.phase-drop .item-ball {
+  animation: dropBall 0.45s cubic-bezier(0.55, 0, 0.85, 0.36) forwards;
+}
+
+@keyframes dropBall {
+  0% {
+    opacity: 1;
+    top: -18px;
+    transform: translateX(-50%) scale(1);
+  }
+  70% {
+    opacity: 1;
+    top: 2px;
+    transform: translateX(-50%) scale(1.1);
+  }
+  85% {
+    opacity: 0.8;
+    top: -2px;
+    transform: translateX(-50%) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    top: 2px;
+    transform: translateX(-50%) scale(0.3);
+  }
+}
+
+/* ── Button Text ─────────────────────────────── */
+.btn-text {
+  position: relative;
+  white-space: nowrap;
+  z-index: 2;
+  transition: opacity 0.1s ease;
+}
+
+/* The wipe mask moves with the cart. We use a pseudo-element as an eraser */
+.cart-btn.phase-wipe .btn-text {
+  animation: textWipeOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes textWipeOut {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  100% {
+    clip-path: inset(0 0 0 100%);
+    opacity: 0;
+  }
+}
+
+/* ── Success State ───────────────────────────── */
+.btn-success {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.check-svg {
+  width: 22px;
+  height: 22px;
+  color: #4ade80;
+  filter: drop-shadow(0 0 6px rgba(74, 222, 128, 0.6));
+}
+
+.cart-btn.phase-done .btn-success {
+  animation: successAppear 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes successAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cart-btn.phase-done {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 4px 24px rgba(34, 197, 94, 0.4);
+}
+
+/* Hide original icon + text when done */
+.cart-btn.phase-done .cart-icon {
+  opacity: 0;
+}
+
+.cart-btn.phase-done .btn-text {
+  opacity: 0;
+}
