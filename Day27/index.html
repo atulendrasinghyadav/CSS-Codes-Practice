@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hill Climb Racing Clone</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        
+        <div class="ui-layer">
+            <div class="top-bar">
+                <div class="stat-box score-box">
+                    <span class="label">DISTANCE</span>
+                    <span id="score">0m</span>
+                </div>
+                <div class="stat-box coins-box">
+                    <span class="label">COINS</span>
+                    <span id="coins">0</span>
+                </div>
+            </div>
+            
+            <div class="fuel-container">
+                <div class="fuel-label">FUEL</div>
+                <div class="fuel-bar-bg">
+                    <div id="fuel-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="btn-brake" class="control-btn brake-btn">
+                    <span>BRAKE</span>
+                </button>
+                <button id="btn-gas" class="control-btn gas-btn">
+                    <span>GAS</span>
+                </button>
+            </div>
+            
+            <div id="game-over-screen" class="overlay hidden">
+                <h1 class="game-over-title">OUT OF FUEL</h1>
+                <div class="final-stats">
+                    <p>Distance: <span id="final-score">0</span>m</p>
+                    <p>Coins: <span id="final-coins">0</span></p>
+                </div>
+                <button id="btn-restart" class="primary-btn">PLAY AGAIN</button>
+            </div>
+            
+            <div id="start-screen" class="overlay">
+                <h1 class="game-title">HILL RIDER</h1>
+                <p class="game-subtitle">Conquer the terrain</p>
+                <button id="btn-start" class="primary-btn">START ENGINE</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
