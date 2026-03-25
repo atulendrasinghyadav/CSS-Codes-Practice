@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Drop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-wrapper">
+    <div class="side-panel left-panel">
+      <div class="info-box">
+        <h3>Next</h3>
+        <canvas id="nextCanvas" width="100" height="100"></canvas>
+      </div>
+      <div class="info-box">
+        <h3>Hold</h3>
+        <canvas id="holdCanvas" width="100" height="100"></canvas>
+      </div>
+    </div>
+
+    <div class="board-container">
+      <canvas id="gameBoard"></canvas>
+      <div id="overlay" class="overlay hidden">
+        <div class="overlay-content">
+          <h2 id="overlayTitle">Block Drop</h2>
+          <p id="overlayMsg">Press ENTER or tap START to play</p>
+          <button id="startBtn">START</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-panel right-panel">
+      <div class="info-box score-box">
+        <h3>Score</h3>
+        <span id="score">0</span>
+      </div>
+      <div class="info-box score-box">
+        <h3>Lines</h3>
+        <span id="lines">0</span>
+      </div>
+      <div class="info-box score-box">
+        <h3>Level</h3>
+        <span id="level">1</span>
+      </div>
+      <div class="controls-info">
+        <h3>Controls</h3>
+        <ul>
+          <li><kbd>←</kbd> <kbd>→</kbd> Move</li>
+          <li><kbd>↑</kbd> Rotate</li>
+          <li><kbd>↓</kbd> Soft drop</li>
+          <li><kbd>Space</kbd> Hard drop</li>
+          <li><kbd>C</kbd> Hold</li>
+          <li><kbd>P</kbd> Pause</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-controls">
+    <button id="btnLeft" class="ctrl-btn">◀</button>
+    <button id="btnRotate" class="ctrl-btn">↻</button>
+    <button id="btnDown" class="ctrl-btn">▼</button>
+    <button id="btnRight" class="ctrl-btn">▶</button>
+    <button id="btnDrop" class="ctrl-btn drop-btn">⏬</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
