@@ -1,0 +1,276 @@
+/* ─── Reset & Base ─── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: #0a0a1a;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ─── Game Wrapper ─── */
+#game-wrapper {
+    position: relative;
+    width: 420px;
+    height: 680px;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow:
+        0 0 60px rgba(255, 107, 107, 0.15),
+        0 0 120px rgba(78, 84, 200, 0.1),
+        0 30px 60px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.06);
+}
+
+#bg-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#game-canvas {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* ─── HUD ─── */
+#hud {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+#hud.visible {
+    opacity: 1;
+}
+
+#score-display {
+    font-size: 64px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.12);
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+    letter-spacing: -2px;
+    transition: transform 0.15s ease;
+}
+
+#score-display.bump {
+    transform: scale(1.3);
+}
+
+/* ─── Overlays ─── */
+.overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 8, 24, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.overlay-content {
+    text-align: center;
+    padding: 40px;
+}
+
+/* ─── Logo Icon ─── */
+.logo-icon {
+    margin: 0 auto 20px;
+    width: 80px;
+    height: 80px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+/* ─── Titles ─── */
+h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+h1 span {
+    background: linear-gradient(135deg, #ff6b6b, #ffd93d, #6bcf7f);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 32px;
+    font-weight: 400;
+}
+
+.gameover-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: #ff4757;
+    margin-bottom: 28px;
+    text-shadow: 0 0 40px rgba(255, 71, 87, 0.3);
+}
+
+/* ─── Score Cards ─── */
+.score-card {
+    display: inline-block;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px 28px;
+    margin: 0 8px 20px;
+    min-width: 110px;
+}
+
+.score-card.best {
+    border-color: rgba(255, 215, 0, 0.2);
+    background: rgba(255, 215, 0, 0.05);
+}
+
+.score-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+}
+
+.score-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.score-card.best .score-value {
+    color: #ffd93d;
+}
+
+/* ─── Glow Button ─── */
+.btn-glow {
+    position: relative;
+    display: inline-block;
+    padding: 14px 48px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 30px rgba(255, 107, 107, 0.35);
+    margin-top: 8px;
+}
+
+.btn-glow:hover {
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 10px 40px rgba(255, 107, 107, 0.5);
+}
+
+.btn-glow:active {
+    transform: scale(0.97);
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.15),
+        transparent
+    );
+    transform: rotate(25deg);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -60%; }
+    100% { left: 120%; }
+}
+
+/* ─── Best Score on Start ─── */
+.best-score-display {
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.3);
+    font-weight: 600;
+}
+
+.best-score-display span {
+    color: #ffd93d;
+}
+
+/* ─── New Best Animation ─── */
+@keyframes newBest {
+    0% { transform: scale(1); color: #ffd93d; }
+    50% { transform: scale(1.2); color: #ffe066; }
+    100% { transform: scale(1); color: #ffd93d; }
+}
+
+.new-best {
+    animation: newBest 0.6s ease;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 440px) {
+    #game-wrapper {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+}
+
+@media (max-height: 700px) {
+    #game-wrapper {
+        height: 100vh;
+        border-radius: 0;
+    }
+}

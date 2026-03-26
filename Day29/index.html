@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Don't Touch the Spikes — A thrilling arcade game where a bouncing ball navigates between closing spike walls.">
+    <title>Don't Touch the Spikes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-wrapper">
+        <!-- Ambient background particles -->
+        <canvas id="bg-canvas"></canvas>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="overlay active">
+            <div class="overlay-content">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 80 80" width="80" height="80">
+                        <circle cx="40" cy="40" r="16" fill="url(#ballGrad)"/>
+                        <defs>
+                            <radialGradient id="ballGrad" cx="35%" cy="35%">
+                                <stop offset="0%" stop-color="#ffe066"/>
+                                <stop offset="100%" stop-color="#ff6b6b"/>
+                            </radialGradient>
+                        </defs>
+                        <!-- spikes -->
+                        <polygon points="0,20 8,28 0,36" fill="#ff4757" opacity="0.7"/>
+                        <polygon points="0,36 8,44 0,52" fill="#ff4757" opacity="0.7"/>
+                        <polygon points="80,20 72,28 80,36" fill="#ff4757" opacity="0.7"/>
+                        <polygon points="80,36 72,44 80,52" fill="#ff4757" opacity="0.7"/>
+                    </svg>
+                </div>
+                <h1>Don't Touch<br><span>the Spikes</span></h1>
+                <p class="subtitle">Tap or click to bounce. Avoid the spikes!</p>
+                <button id="start-btn" class="btn-glow">Play</button>
+                <div class="best-score-display">Best: <span id="start-best">0</span></div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="overlay">
+            <div class="overlay-content">
+                <h2 class="gameover-title">Game Over</h2>
+                <div class="score-card">
+                    <div class="score-label">Score</div>
+                    <div class="score-value" id="final-score">0</div>
+                </div>
+                <div class="score-card best">
+                    <div class="score-label">Best</div>
+                    <div class="score-value" id="final-best">0</div>
+                </div>
+                <button id="restart-btn" class="btn-glow">Try Again</button>
+            </div>
+        </div>
+
+        <!-- HUD -->
+        <div id="hud">
+            <div id="score-display">0</div>
+        </div>
+
+        <!-- Game Canvas -->
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
