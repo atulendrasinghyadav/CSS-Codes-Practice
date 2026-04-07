@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#050816" />
+  <title>Asteroid Dodge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Finger-controlled survival game</p>
+        <h1>Asteroid Dodge</h1>
+        <p class="lede">Drag the ship with your finger or mouse. Stay alive as long as you can while the asteroid field gets meaner.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span>Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Best</span>
+          <strong id="bestScore">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Threat</span>
+          <strong id="threat">Low</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-shell">
+      <header class="hud">
+        <div class="hud-group">
+          <div class="hud-pill">Shield: <span id="shield">100</span>%</div>
+          <div class="hud-pill">Wave <span id="wave">1</span></div>
+          <div class="hud-pill">Lives <span id="lives">1</span></div>
+        </div>
+        <div class="hud-group">
+          <button id="pauseBtn" class="ghost-btn" type="button">Pause</button>
+          <button id="restartBtn" class="primary-btn" type="button">Restart</button>
+        </div>
+      </header>
+
+      <div id="arena" class="arena" aria-label="Asteroid Dodge game area" role="application">
+        <div class="arena-grid"></div>
+        <div class="arena-glow"></div>
+        <div id="stars" class="stars"></div>
+        <div id="ship" class="ship" aria-hidden="true">
+          <div class="ship-body"></div>
+          <div class="ship-core"></div>
+          <div class="ship-wing ship-wing-left"></div>
+          <div class="ship-wing ship-wing-right"></div>
+          <div class="ship-thrust"></div>
+        </div>
+
+        <div id="overlay" class="overlay is-visible">
+          <div class="overlay-card">
+            <p class="overlay-kicker">Launch sequence</p>
+            <h2>Guide the ship through the storm.</h2>
+            <p>Press start, then drag anywhere inside the field to steer. Narrow escapes build momentum, but one direct hit ends the run.</p>
+            <div class="controls-list">
+              <span>Drag to move</span>
+              <span>Arrow keys / WASD supported</span>
+              <span>Tap restart after a crash</span>
+            </div>
+            <button id="startBtn" class="primary-btn launch-btn" type="button">Start Mission</button>
+          </div>
+        </div>
+
+        <div id="gameOver" class="overlay game-over">
+          <div class="overlay-card danger-card">
+            <p class="overlay-kicker">Mission failed</p>
+            <h2>Ship destroyed.</h2>
+            <p>Your final score is <strong id="finalScore">0</strong>. Dodge longer on the next run to push the high score higher.</p>
+            <button id="playAgainBtn" class="primary-btn launch-btn" type="button">Try Again</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <template id="asteroidTemplate">
+    <div class="asteroid"><div class="asteroid-crater crater-1"></div><div class="asteroid-crater crater-2"></div><div class="asteroid-crater crater-3"></div></div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
