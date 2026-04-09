@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scratch Card Reveal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="scene">
+      <section class="hero">
+        <p class="eyebrow">A little game for your heart</p>
+        <h1>Scratch gently to reveal a secret meant only for you.</h1>
+        <p class="subcopy">
+          Run your finger or mouse across the card and watch the hidden note
+          bloom into view.
+        </p>
+      </section>
+
+      <section class="card-shell" aria-label="romantic scratch card">
+        <div class="card glow"></div>
+        <div class="card secret-card">
+          <div class="secret-top">
+            <span class="pill">For the one I adore</span>
+            <span class="tiny-heart">♥</span>
+          </div>
+
+          <div class="secret-message">
+            <p class="whisper">If you are reading this, the universe did something cute.</p>
+            <h2 id="secretHeadline">You are my favorite hello and my softest forever.</h2>
+            <p id="secretBody">
+              Every scratch clears away a little more of my shyness, and every
+              little bit says the same thing: you make my world gentler, warmer,
+              and a lot more beautiful.
+            </p>
+          </div>
+
+          <div class="signature">
+            <span>With all my heart</span>
+            <strong>Your secret admirer</strong>
+          </div>
+        </div>
+
+        <canvas id="scratchCanvas" class="scratch-canvas" aria-label="Scratch to reveal the message"></canvas>
+
+        <div class="hint">
+          <span>Scratch here</span>
+          <span class="dots" aria-hidden="true">•••</span>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
